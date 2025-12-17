@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InstantConfirm - Instant Bank Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+      body {
+        font-family: 'Inter', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #0A1628;
+        color: #F3F4F6;
+      }
+      
+      .glass-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .glass-card:hover {
+        transform: scale(1.03) translateY(-5px);
+        box-shadow: 0 0 25px rgba(0, 102, 255, 0.3), 0 0 40px rgba(16, 185, 129, 0.2);
+        border-color: rgba(0, 102, 255, 0.5);
+      }
+
+      .gradient-border {
+        border: 2px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to right, #0066FF, #10B981);
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.7); }
+        50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(0, 102, 255, 0); }
+      }
+
+      .animate-pulse-button {
+        animation: pulse 2s infinite;
+      }
+
+      .animate-on-scroll {
+        animation: fadeInUp 0.8s ease-out forwards;
+        animation-timeline: view();
+        animation-range-start: entry 10%;
+        animation-range-end: entry 40%;
+        opacity: 0;
+      }
+
+      /* Particle Background */
+      #particle-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        overflow: hidden;
+        background: linear-gradient(180deg, #0A1628 0%, #001E4C 100%);
+      }
+
+      .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(0, 102, 255, 0.3);
+        animation: float 25s infinite linear;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0) translateX(0); opacity: 0.3; }
+        50% { transform: translateY(-100vh) translateX(20vw); opacity: 0.1; }
+        100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+      }
+
+      /* Auditor Animation */
+      @keyframes scan {
+        0% { transform: translateX(-200px); }
+        100% { transform: translateX(100vw); }
+      }
+      .auditor-scanner {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        width: 200px;
+        height: 250px;
+        animation: scan 15s linear infinite;
+        z-index: 15;
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .magnifier-lens {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 3px solid rgba(0, 102, 255, 0.5);
+        background: rgba(0, 102, 255, 0.1);
+        backdrop-filter: blur(2px);
+        top: 30px;
+        left: 10px;
+      }
+    </style>
+  </head>
+  <body class="bg-[#0A1628]">
+    <div id="particle-container"></div>
+    <div id="root"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.3.1",
+          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+          "@google/genai": "https://esm.sh/@google/genai"
+        }
+      }
+    </script>
+    <script type="module" src="/index.tsx"></script>
+    <script>
+      // Particle script
+      const container = document.getElementById('particle-container');
+      if (container) {
+        const numParticles = 25;
+        for (let i = 0; i < numParticles; i++) {
+          const particle = document.createElement('div');
+          particle.classList.add('particle');
+          const size = Math.random() * 7 + 3;
+          particle.style.width = `${size}px`;
+          particle.style.height = `${size}px`;
+          particle.style.top = `${Math.random() * 100}vh`;
+          particle.style.left = `${Math.random() * 100}vw`;
+          particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
+          particle.style.animationDelay = `${Math.random() * -25}s`;
+          if (i % 2 === 0) {
+            particle.style.background = 'rgba(16, 185, 129, 0.2)';
+          }
+          container.appendChild(particle);
+        }
+      }
+    </script>
+  </body>
+</html>
